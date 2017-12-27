@@ -18,7 +18,16 @@ io.on('connection', (socket) => {
         console.log('User was Disconnected to server');
     });
 
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'welcome to the chat app'
+    });
 
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'New user joined',
+        createdAt: new Date().getTime()
+    });
 
     socket.on('createMessage', (message) => {
         console.log('Create Message ->', message);
@@ -28,6 +37,12 @@ io.on('connection', (socket) => {
             text: message.text,
             createdAt: new Date().getTime()
         });
+        //send message for all connected users excluding the emitter
+        // io.broadcast.emit('newMessage', { 
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // });
     });
 });
 
