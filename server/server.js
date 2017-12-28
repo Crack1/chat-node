@@ -5,7 +5,8 @@ const socketIO = require('socket.io')
 
 const express = require('express');
 const {
-    generateMessage
+    generateMessage,
+    generateLocationMessage
 } = require('./utils/message');
 const port = process.env.PORT || 3000;
 var app = express();
@@ -24,6 +25,10 @@ io.on('connection', (socket) => {
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat App'));
 
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
+
+    socket.on('createLocationMessage', (coords) => {
+        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+    });
 
     socket.on('createMessage', (message, callback) => {
         io.emit('newMessage', generateMessage(message.from, message.text));
