@@ -7,22 +7,43 @@ socket.on('disconnect', function () {
     console.log('Disconnected to server');
 });
 socket.on('newMessage', (message) => {
-    var li = jQuery('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
-    jQuery('#messages').append(li);
+
+    var template = jQuery('#message-template').html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    })
+    jQuery('#messages').append(html);
+
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    // var li = jQuery('<li></li>');
+    // li.text(`${message.from}  ${formattedTime}: ${message.text}`);
+    // jQuery('#messages').append(li);
 });
 
 socket.on('newLocationMessage', function (message) {
-    var li = jQuery('<li></li>');
-    var a = jQuery('<a target="_blank"> My current location</a>');
-    li.text(`${message.from}: `);
-    a.attr('href', message.url);
-    li.append(a);
-    var li2 = jQuery('<li></li>');
-    var iframe = jQuery(`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.420879748622!2d${message.lon}!3d${message.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQxJzM0LjYiTiA4OcKwMTMnMDUuNSJX!5e0!3m2!1ses-419!2ssv!4v1514437047300" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>`);
-    li2.append(iframe);
-    jQuery('#messages').append(li);
-    jQuery('#messages').append(li2);
+
+    var template = jQuery('#location-message-template').html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime,
+        lat: message.lon,
+        lon: message.lat
+    })
+    jQuery('#messages').append(html);
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    // var li = jQuery('<li></li>');
+    // var a = jQuery('<a target="_blank"> My current location</a>');
+    // li.text(`${message.from}  ${formattedTime}: `);
+    // a.attr('href', message.url);
+    // li.append(a);
+    // var li2 = jQuery('<li></li>');
+    // var iframe = jQuery(``);
+    // li2.append(iframe);
+    // // jQuery('#messages').append(li);
+    // jQuery('#messages').append(li2);
 });
 
 jQuery('#message-form').on('submit', function (e) {

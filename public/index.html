@@ -25,8 +25,41 @@
         </div>
     </div>
 
+    <script id="message-template" type="text/template">
+        <li class="message">
+            <div class="message__title">
+                <h4>{{from}}</h4>
+                <span>{{createdAt}}</span>
+            </div>
+            <div class="message__body">
+                <p>{{text}}</p>
+            </div>
+
+
+        </li>
+    </script>
+
+    <script id="location-message-template" type="text/template">
+        <li class="message">
+            <div class="message__title">
+                <h4>{{from}}</h4>
+                <span>{{createdAt}}</span>
+            </div>
+            <div class="message__body">
+                <p>
+                    <a href="{{url}}" target="_blank"> My current Location </a>
+                </p>
+            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.420879748622!2d${{lon}}!3d${{lat}}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQxJzM0LjYiTiA4OcKwMTMnMDUuNSJX!5e0!3m2!1ses-419!2ssv!4v1514437047300" width="400" height="300" frameborder="0" style="border:0"
+                allowfullscreen></iframe>
+        </li>
+    </script>
+
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="./js/libs/jquery.js"></script>
+    <script src="./js/libs/moment.js"></script>
+    <script src="./js/libs/mustache.js"></script>
     <script src="./js/index.js"></script>
 
 </body>
