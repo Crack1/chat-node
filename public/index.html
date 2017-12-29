@@ -1,66 +1,39 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/styles.css">
+    <title>Join | ChatApp</title>
 </head>
 
-<body class="chat">
+<body class="centered-form">
 
-    <div class="chat__sidebar">
-        <h3>People</h3>
-        <div id="users"></div>
+    <div class="centered-form__form">
+        <form action="/chat.html">
+            <div class="form-field">
+                <h3>Join a Chat</h3>
+            </div>
+            <div class="form-field">
+                <label for="">Display Name</label>
+                <input type="text" name="name" autofocus>
+            </div>
+            <div class="form-field">
+                <label for="">Room Mate</label>
+                <input type="text" name="room">
+            </div>
+            <div class="form-field">
+                <button>Join</button>
+            </div>
+        </form>
     </div>
 
-    <div class="chat__main">
-        <ol id="messages" class="chat__messages"></ol>
-        <div class="chat__footer">
-            <form id="message-form">
-                <input name="message" type="text" placeholder="Message" autofocus autocomplete="off">
-                <button>Send</button>
-            </form>
-            <button id="send-location">Send Location</button>
-        </div>
-    </div>
-
-    <script id="message-template" type="text/template">
-        <li class="message">
-            <div class="message__title">
-                <h4>{{from}}</h4>
-                <span>{{createdAt}}</span>
-            </div>
-            <div class="message__body">
-                <p>{{text}}</p>
-            </div>
 
 
-        </li>
-    </script>
-
-    <script id="location-message-template" type="text/template">
-        <li class="message">
-            <div class="message__title">
-                <h4>{{from}}</h4>
-                <span>{{createdAt}}</span>
-            </div>
-            <div class="message__body">
-                <p>
-                    <a href="{{url}}" target="_blank"> My current Location </a>
-                </p>
-            </div>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.420879748622!2d${{lon}}!3d${{lat}}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQxJzM0LjYiTiA4OcKwMTMnMDUuNSJX!5e0!3m2!1ses-419!2ssv!4v1514437047300" width="400" height="300" frameborder="0" style="border:0"
-                allowfullscreen></iframe>
-        </li>
-    </script>
 
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./js/libs/jquery.js"></script>
-    <script src="./js/libs/moment.js"></script>
-    <script src="./js/libs/mustache.js"></script>
-    <script src="./js/index.js"></script>
 
 </body>
 

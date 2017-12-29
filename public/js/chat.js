@@ -1,22 +1,76 @@
 var socket = io();
+
+function GetURLParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+        }
+    }
+}
+
+function scrollToBotton() {
+    var messages = jQuery('#messages');
+    var newMessage = messages.children('li:last-child');
+    var clientHeight = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollHeight = messages.prop('scrollHeight');
+    var newMessaeHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight();
+    if (clientHeight + scrollTop + newMessaeHeight + lastMessageHeight >= scrollHeight) {
+        messages.scrollTop(scrollHeight)
+    }
+
+}
+
+
 socket.on('connect', function () {
     console.log('Connected to server');
+    var params = jQuery.deparam(window.location.search);
+    socket.emit('join', params, function (err) {
+        if (err) {
+            alert(err);
+            window.location.href = "/";
+        } else {
+            console.log("No error");
+        }
 
+    });
 });
 socket.on('disconnect', function () {
     console.log('Disconnected to server');
-});
-socket.on('newMessage', (message) => {
 
+});
+
+
+socket.on('updateUserList', function (users) {
+    var ol = jQuery('<ol></ol>');
+    users.forEach(function (user) {
+        ol.append(jQuery('<li></li>').text(user));
+    });
+    jQuery('#users').html(ol);
+});
+
+
+socket.on('newMessage', (message) => {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#message-template').html();
+
+    var name = GetURLParameter('name');
+
+    if (message.text == "Welcome to the chat App") {
+        message.text = `Welcome to the chat App: ${name}`;
+    }
     var html = Mustache.render(template, {
-        text: message.text,
         from: message.from,
+        text: message.text,
         createdAt: formattedTime
     })
     jQuery('#messages').append(html);
+    scrollToBotton();
 
-    var formattedTime = moment(message.createdAt).format('h:mm a');
     // var li = jQuery('<li></li>');
     // li.text(`${message.from}  ${formattedTime}: ${message.text}`);
     // jQuery('#messages').append(li);
